@@ -30,7 +30,21 @@ export const App = () => {
           { x: 300, y: 300, head: "#4bbe25", body: "#60f42f" },
           { x: 330, y: 300, head: "#4bbe25", body: "#60f42f" },
         ];
-        const food: Food = { x: 90, y: 90, color: "red" };
+
+        const randomNumber = (min: number, max: number) => {
+          return Math.round(Math.random() * (max - min) + min);
+        };
+
+        const randomPosition = () => {
+          const number = randomNumber(0, canvas.width - size);
+          return Math.round(number / 30) * 30;
+        };
+
+        const food: Food = {
+          x: randomPosition(),
+          y: randomPosition(),
+          color: "red",
+        };
 
         let direction: string, loopId: number;
 
@@ -66,41 +80,41 @@ export const App = () => {
             return;
           }
 
-          const head = snake[snake.length - 1];
+          const { x, y, head, body } = snake[snake.length - 1];
 
           if (direction == "right") {
             snake.push({
-              x: head.x + size,
-              y: head.y,
-              head: "#4bbe25",
-              body: "#60f42f",
+              x: x + size,
+              y: y,
+              head: head,
+              body: body,
             });
           }
 
           if (direction == "left") {
             snake.push({
-              x: head.x - size,
-              y: head.y,
-              head: "#4bbe25",
-              body: "#60f42f",
+              x: x - size,
+              y: y,
+              head: head,
+              body: body,
             });
           }
 
           if (direction == "down") {
             snake.push({
-              x: head.x,
-              y: head.y + size,
-              head: "#4bbe25",
-              body: "#60f42f",
+              x: x,
+              y: y + size,
+              head: head,
+              body: body,
             });
           }
 
           if (direction == "up") {
             snake.push({
-              x: head.x,
-              y: head.y - size,
-              head: "#4bbe25",
-              body: "#60f42f",
+              x: x,
+              y: y - size,
+              head: head,
+              body: body,
             });
           }
 
@@ -124,6 +138,17 @@ export const App = () => {
           }
         };
 
+        const checkEat = () => {
+          const head = snake[snake.length - 1];
+
+          if (head.x == food.x && head.y == food.y) {
+            snake.push(head);
+
+            food.x = randomPosition();
+            food.y = randomPosition();
+          }
+        };
+
         const gameLoop = () => {
           clearInterval(loopId);
           context.clearRect(0, 0, canvas.width, canvas.height);
@@ -131,6 +156,7 @@ export const App = () => {
           drawFood();
           moveSnake();
           drawSnake();
+          checkEat();
 
           loopId = setTimeout(() => {
             gameLoop();
