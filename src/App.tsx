@@ -46,7 +46,7 @@ export const App = () => {
           color: "red",
         };
 
-        let direction: string, loopId: number;
+        let direction: string | undefined, loopId: number;
 
         const drawFood = () => {
           const { x, y, color } = food;
@@ -159,6 +159,28 @@ export const App = () => {
           }
         };
 
+        const checkCollision = () => {
+          const { x, y } = snake[snake.length - 1];
+          const canvasLimit = canvas.width - size;
+          const neckIndex = snake.length - 2;
+
+          const wallCollision =
+            x < 0 || x > canvasLimit || y < 0 || y > canvasLimit;
+
+          const selfCollision = snake.find(
+            (position, index) =>
+              index < neckIndex && position.x === x && position.y === y
+          );
+
+          if (wallCollision || selfCollision) {
+            gameOver();
+          }
+        };
+
+        const gameOver = () => {
+          direction = undefined;
+        };
+
         const gameLoop = () => {
           clearInterval(loopId);
           context.clearRect(0, 0, canvas.width, canvas.height);
@@ -167,6 +189,7 @@ export const App = () => {
           moveSnake();
           drawSnake();
           checkEat();
+          checkCollision();
 
           loopId = setTimeout(() => {
             gameLoop();
