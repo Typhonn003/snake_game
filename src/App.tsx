@@ -11,6 +11,7 @@ import { Food } from "./interfaces/food";
 import { Snake } from "./interfaces/snake";
 
 export const App = () => {
+  const gridSize = 600;
   const [score, setScore] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -21,26 +22,25 @@ export const App = () => {
       const context = canvas.getContext("2d");
 
       if (context) {
-        const canvasWidth = canvas.width;
-        const canvasHeigth = canvas.height;
+        const { width: canvasWidth, height: canvasHeigth } = canvas;
         const headColor = "#4bbe25";
         const bodyColor = "#60f42f";
         const size = 30;
         const snake: Snake[] = [
-          { x: 120, y: 300, head: headColor, body: bodyColor },
-          { x: 150, y: 300, head: headColor, body: bodyColor },
+          { x: (gridSize / 2) / 2 - size, y: gridSize / 2, head: headColor, body: bodyColor },
+          { x: (gridSize / 2) / 2, y: gridSize / 2, head: headColor, body: bodyColor },
         ];
         const food: Food = {
           x: 450,
           y: 300,
-          color: "red",
+          color: "#ff0000",
         };
         let loopId: number;
         let direction: string | undefined;
 
         const checkCollision = () => {
           const { x, y } = snake[snake.length - 1];
-          const canvasLimit = canvas.width - size;
+          const canvasLimit = gridSize - size;
           const neckIndex = snake.length - 2;
 
           const wallCollision =
@@ -100,7 +100,7 @@ export const App = () => {
   return (
     <Div>
       <h2>Score: {score}</h2>
-      <Canvas width={600} height={600} ref={canvasRef} />
+      <Canvas width={gridSize} height={gridSize} ref={canvasRef} />
     </Div>
   );
 };

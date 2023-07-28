@@ -17,6 +17,8 @@ export const drawSnake = (
       context.fillStyle = head;
     }
     context.fillRect(position.x, position.y, size, size);
+    context.strokeStyle = "#000"
+    context.strokeRect(position.x, position.y, size, size)
     context.shadowBlur = 0;
   });
 };

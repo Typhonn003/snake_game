@@ -11,5 +11,7 @@ export const drawFood = (
   context.shadowBlur = 50;
   context.fillStyle = color;
   context.fillRect(x, y, size, size);
+  context.strokeStyle = "#fff"
+  context.strokeRect(x, y, size, size)
   context.shadowBlur = 0;
 };
