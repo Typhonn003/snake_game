@@ -1,17 +1,17 @@
-import { useEffect, useRef } from "react";
-import { Canvas } from "./canvas";
+import { useEffect, useRef, useState } from "react";
+import { Canvas, Div } from "./style";
 import {
   checkEat,
   drawFood,
   drawGrid,
   drawSnake,
   moveSnake,
-  randomPosition,
 } from "./functions";
 import { Food } from "./interfaces/food";
 import { Snake } from "./interfaces/snake";
 
 export const App = () => {
+  const [score, setScore] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -27,13 +27,12 @@ export const App = () => {
         const bodyColor = "#60f42f";
         const size = 30;
         const snake: Snake[] = [
-          { x: 270, y: 300, head: headColor, body: bodyColor },
-          { x: 300, y: 300, head: headColor, body: bodyColor },
-          { x: 330, y: 300, head: headColor, body: bodyColor },
+          { x: 120, y: 300, head: headColor, body: bodyColor },
+          { x: 150, y: 300, head: headColor, body: bodyColor },
         ];
         const food: Food = {
-          x: randomPosition(canvasWidth, size),
-          y: randomPosition(canvasWidth, size),
+          x: 450,
+          y: 300,
           color: "red",
         };
         let loopId: number;
@@ -68,7 +67,7 @@ export const App = () => {
           drawFood(context, food, size);
           moveSnake(direction, snake, size);
           drawSnake(context, snake, size);
-          checkEat(snake, food, canvasWidth, size);
+          checkEat(snake, food, canvasWidth, size, setScore);
           checkCollision();
 
           loopId = setTimeout(() => {
@@ -96,5 +95,10 @@ export const App = () => {
     }
   }, []);
 
-  return <Canvas width={600} height={600} ref={canvasRef} />;
+  return (
+    <Div>
+      <h2>Score: {score}</h2>
+      <Canvas width={600} height={600} ref={canvasRef} />
+    </Div>
+  );
 };

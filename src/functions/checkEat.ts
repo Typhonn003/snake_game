@@ -6,7 +6,8 @@ export const checkEat = (
   snake: Snake[],
   food: Food,
   width: number,
-  size: number
+  size: number,
+  score: (value: (value: number) => number) => void
 ) => {
   const head = snake[snake.length - 1];
 
@@ -23,5 +24,6 @@ export const checkEat = (
 
     food.x = x;
     food.y = y;
+    score((prevScore: number) => prevScore + 10);
   }
 };
