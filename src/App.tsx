@@ -77,20 +77,22 @@ export const App = () => {
 
         gameLoop();
 
-        document.addEventListener("keydown", ({ key }) => {
-          if (key == "ArrowRight" && direction != "left") {
+        const snakeDirection = (event: KeyboardEvent) => {
+          if (event.key == "ArrowRight" && direction != "left") {
             direction = "right";
           }
-          if (key == "ArrowLeft" && direction != "right") {
+          if (event.key == "ArrowLeft" && direction != "right") {
             direction = "left";
           }
-          if (key == "ArrowDown" && direction != "up") {
+          if (event.key == "ArrowDown" && direction != "up") {
             direction = "down";
           }
-          if (key == "ArrowUp" && direction != "down") {
+          if (event.key == "ArrowUp" && direction != "down") {
             direction = "up";
           }
-        });
+        };
+
+        document.addEventListener("keydown", (event) => snakeDirection(event));
       }
     }
   }, []);
